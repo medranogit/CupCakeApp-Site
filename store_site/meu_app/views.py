@@ -7,6 +7,9 @@ from .forms import RegistroForm, ComentarioForm, AvaliacaoForm
 from django.db.models import Sum  # Import para somar as quantidades no carrinho
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+import random
+import re
+from django.contrib import messages
 
 
 
@@ -41,24 +44,38 @@ def adicionar_carrinho(request, produto_id):
     return JsonResponse({"message": "Produto adicionado com sucesso!", "total_itens": total_itens})
 
 
-
 def about(request):
     """Exibe a página 'Sobre'."""
     return render(request, 'meu_app/about.html')
 
-
 @login_required
 def carrinho(request):
-    """Exibe a página do carrinho com os itens do usuário."""
+    """Exibe a página do carrinho com os itens do usuário e calcula o frete."""
     carrinho = Carrinho.objects.filter(usuario=request.user).first()
     itens = []
     total_geral = 0
+    frete = None
+    erro_cep = None
 
     if carrinho:
         itens = carrinho.carrinhoproduto_set.all()
         total_geral = sum(item.subtotal for item in itens)  # Soma de todos os subtotais
 
-    return render(request, 'meu_app/carrinho.html', {'carrinho': carrinho, 'itens': itens, 'total_geral': total_geral})
+    if request.method == 'POST' and 'calcular_frete' in request.POST:
+        cep = request.POST.get('cep')
+        if re.match(r'^\d{5}-\d{3}$', cep):  # Valida o formato do CEP
+            frete = random.uniform(10, 15)
+            frete = round(frete, 2)
+        else:
+            erro_cep = "CEP inválido. Certifique-se de usar o formato XXXXX-XXX."
+
+    return render(request, 'meu_app/carrinho.html', {
+        'carrinho': carrinho,
+        'itens': itens,
+        'total_geral': total_geral,
+        'frete': frete,
+        'erro_cep': erro_cep,
+    })
 
 @login_required
 def atualizar_quantidade(request, produto_id):
@@ -176,3 +193,34 @@ def adicionar_comentario(request, produto_id):
             nota=int(nota) if nota else None,  # Converte para inteiro, se fornecido
         )
     return redirect('produto_detalhes', produto_id=produto.id)
+
+@login_required
+def finalizar_compra(request):
+    """Exibe uma página fake de pagamento."""
+    carrinho = Carrinho.objects.filter(usuario=request.user).first()
+    total_geral = 0
+
+    if carrinho:
+        itens = carrinho.carrinhoproduto_set.all()
+        total_geral = sum(item.subtotal for item in itens)
+
+    return render(request, 'meu_app/pagamento.html', {'total_geral': total_geral})
+
+@login_required
+def processar_pagamento(request):
+    if request.method == 'POST':
+        # Pegue os dados enviados do formulário de pagamento
+        nome_cartao = request.POST.get('nome_cartao')
+        numero_cartao = request.POST.get('numero_cartao')
+        validade = request.POST.get('validade')
+        cvv = request.POST.get('cvv')
+        parcelas = request.POST.get('parcelas')
+
+        # Simulação de processamento
+        if nome_cartao and numero_cartao and validade and cvv:
+            messages.success(request, 'Pagamento realizado com sucesso!')
+            return redirect('home')  # Redirecionar para a página inicial
+        else:
+            messages.error(request, 'Erro ao processar pagamento. Verifique os dados e tente novamente.')
+            return redirect('finalizar_compra')
+    return redirect('finalizar_compra')

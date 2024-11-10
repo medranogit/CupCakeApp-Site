@@ -40,10 +40,54 @@
         </tbody>
     </table>
     <div class="text-end">
-        <h4>Total Geral: R$ {{ total_geral }}</h4>
+        <h4>Total dos Produtos: R$ {{ total_geral }}</h4>
+    </div>
+    <hr>
+    <h4>Calcular Frete</h4>
+    <form method="post" action="{% url 'carrinho' %}">
+        {% csrf_token %}
+        <input type="hidden" name="calcular_frete">
+        <label for="cep">Digite o CEP:</label>
+        <input
+            type="text"
+            id="cep"
+            name="cep"
+            maxlength="9"
+            pattern="\d{5}-\d{3}"
+            placeholder="XXXXX-XXX"
+            required
+            oninput="formatarCEP(this)"
+        >
+        <button type="submit" class="btn btn-secondary">Calcular Frete</button>
+    </form>
+    {% if erro_cep %}
+    <div class="alert alert-danger mt-3">
+        {{ erro_cep }}
+    </div>
+    {% endif %}
+    {% if frete is not None %}
+    <div class="alert alert-info mt-3">
+        <p><strong>Valor do Frete:</strong> R$ {{ frete }}</p>
+        <p><strong>Total com Frete:</strong> R$ {{ total_geral|add:frete }}</p>
+    </div>
+    {% endif %}
+    <div class="text-end mt-4">
+        <form method="get" action="{% url 'finalizar_compra' %}">
+            <button type="submit" class="btn btn-success btn-lg">Finalizar Compra</button>
+        </form>
     </div>
     {% else %}
     <p>Seu carrinho está vazio.</p>
     {% endif %}
 </div>
+
+<script>
+    function formatarCEP(campo) {
+        let cep = campo.value.replace(/\D/g, ''); // Remove qualquer caractere não numérico
+        if (cep.length > 5) {
+            cep = cep.slice(0, 5) + '-' + cep.slice(5, 8); // Insere o hífen automaticamente
+        }
+        campo.value = cep; // Atualiza o valor do campo
+    }
+</script>
 {% endblock %}
