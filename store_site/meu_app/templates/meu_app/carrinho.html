@@ -5,7 +5,7 @@
 {% block content %}
 <h1>Seu Carrinho</h1>
 <div class="container">
-    {% if carrinho and carrinho.carrinhoproduto_set.all %}
+    {% if carrinho and itens %}
     <table class="table">
         <thead>
             <tr>
@@ -13,29 +13,35 @@
                 <th>Quantidade</th>
                 <th>Preço Unitário</th>
                 <th>Subtotal</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            {% for item in carrinho.carrinhoproduto_set.all %}
-<tr>
-    <td>{{ item.produto.titulo }}</td>
-    <td>
-        <form method="post" action="{% url 'atualizar_quantidade' item.produto.id %}">
-            {% csrf_token %}
-            <input type="number" name="quantidade" value="{{ item.quantidade }}" min="1">
-            <button type="submit" class="btn btn-primary btn-sm">Atualizar</button>
-        </form>
-    </td>
-    <td>
-        <form method="post" action="{% url 'remover_item' item.produto.id %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger btn-sm">Remover</button>
-        </form>
-    </td>
-</tr>
-{% endfor %}
+            {% for item in itens %}
+            <tr>
+                <td>{{ item.produto.titulo }}</td>
+                <td>
+                    <form method="post" action="{% url 'atualizar_quantidade' item.produto.id %}">
+                        {% csrf_token %}
+                        <input type="number" name="quantidade" value="{{ item.quantidade }}" min="1">
+                        <button type="submit" class="btn btn-primary btn-sm">Atualizar</button>
+                    </form>
+                </td>
+                <td>R$ {{ item.produto.preco }}</td>
+                <td>R$ {{ item.subtotal }}</td>
+                <td>
+                    <form method="post" action="{% url 'remover_item' item.produto.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Remover</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
+    <div class="text-end">
+        <h4>Total Geral: R$ {{ total_geral }}</h4>
+    </div>
     {% else %}
     <p>Seu carrinho está vazio.</p>
     {% endif %}

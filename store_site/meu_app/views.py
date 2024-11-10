@@ -51,8 +51,14 @@ def about(request):
 def carrinho(request):
     """Exibe a página do carrinho com os itens do usuário."""
     carrinho = Carrinho.objects.filter(usuario=request.user).first()
-    return render(request, 'meu_app/carrinho.html', {'carrinho': carrinho})
+    itens = []
+    total_geral = 0
 
+    if carrinho:
+        itens = carrinho.carrinhoproduto_set.all()
+        total_geral = sum(item.subtotal for item in itens)  # Soma de todos os subtotais
+
+    return render(request, 'meu_app/carrinho.html', {'carrinho': carrinho, 'itens': itens, 'total_geral': total_geral})
 
 @login_required
 def atualizar_quantidade(request, produto_id):
