@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
-from .models import Produto, Comentario, Avaliacao, Carrinho, CarrinhoProduto
+from .models import Produto, Comentario, Avaliacao, Carrinho, CarrinhoProduto, Compra, Perfil
 from .forms import RegistroForm, ComentarioForm, AvaliacaoForm
 from django.db.models import Sum  # Import para somar as quantidades no carrinho
 from django.http import JsonResponse
@@ -12,6 +12,10 @@ import re
 from django.contrib import messages
 from random import randint, uniform
 from decimal import Decimal, InvalidOperation
+from .forms import EditarPerfilForm
+from .forms import EditarPerfilForm
+from django.contrib import messages
+
 
 
 def home(request):
@@ -221,18 +225,35 @@ def processar_pagamento(request):
 
         if total_com_frete:
             try:
-                # Converte o valor para Decimal e salva como string na sessão
+                # Converte o valor para Decimal
                 total_com_frete = Decimal(total_com_frete.replace(',', '.'))
-                request.session['total_com_frete'] = str(total_com_frete)  # Converte para string
+                request.session['total_com_frete'] = str(total_com_frete)  # Salva como string para evitar problemas
             except (TypeError, ValueError, InvalidOperation):
                 messages.error(request, 'Erro ao processar o valor total. Tente novamente.')
                 return redirect('finalizar_compra')
 
         if nome_cartao and numero_cartao and validade and cvv:
-            # Simula pagamento e limpa o carrinho
+            # Simula pagamento
             carrinho = Carrinho.objects.filter(usuario=request.user).first()
             if carrinho:
+                itens = carrinho.carrinhoproduto_set.all()
+                detalhes_compra = ", ".join(f"{item.produto.titulo} (x{item.quantidade})" for item in itens)
+
+                # Cria a compra no histórico do usuário
+                protocolo = f"PROTO-{randint(100000, 999999)}"
+                Compra.objects.create(
+                    usuario=request.user,
+                    protocolo=protocolo,
+                    total_pago=total_com_frete,
+                    detalhes=detalhes_compra
+                )
+
+                # Limpa o carrinho
                 carrinho.carrinhoproduto_set.all().delete()
+
+                # Salva o protocolo na sessão para exibição na página de conclusão
+                request.session['protocolo'] = protocolo
+
             return redirect('compra_concluida')
         else:
             messages.error(request, 'Erro ao processar pagamento. Verifique os dados e tente novamente.')
@@ -242,14 +263,41 @@ def processar_pagamento(request):
 @login_required
 def compra_concluida(request):
     """Exibe uma página de confirmação de compra com número de protocolo e total."""
-    protocolo = f"PROTO-{randint(100000, 999999)}"
+    protocolo = request.session.get('protocolo', None)
     total_com_frete = request.session.get('total_com_frete', None)
 
     if total_com_frete:
-        # Converte de volta para Decimal para exibir corretamente
         total_com_frete = Decimal(total_com_frete)
 
     return render(request, 'meu_app/compra_concluida.html', {
         'protocolo': protocolo,
         'total_com_frete': total_com_frete,
+    })
+
+
+@login_required
+def perfil(request):
+    usuario = request.user
+    perfil = Perfil.objects.filter(usuario=usuario).first()  # Recupera ou cria o perfil
+
+    if request.method == 'POST':
+        form = EditarPerfilForm(request.POST, instance=usuario)
+        if form.is_valid():
+            # Salva as informações do usuário e do perfil
+            form.save()
+            messages.success(request, 'Perfil atualizado com sucesso!')
+            return redirect('perfil')
+    else:
+        # Preenche o formulário com os dados do usuário e do perfil
+        form = EditarPerfilForm(instance=usuario, initial={
+            'telefone': perfil.telefone if perfil else '',
+            'cep': perfil.cep if perfil else '',
+        })
+
+    compras = usuario.compras.all()  # Histórico de compras do usuário
+
+    return render(request, 'meu_app/perfil.html', {
+        'form': form,
+        'usuario': usuario,
+        'compras': compras,
     })

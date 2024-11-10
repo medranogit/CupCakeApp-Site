@@ -41,6 +41,7 @@
                             {{ user.username }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="{% url 'perfil' %}">Meu Perfil</a>
                             <form method="post" action="{% url 'logout' %}">
                                 {% csrf_token %}
                                 <button class="dropdown-item text-danger" type="submit">Sair</button>

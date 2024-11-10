@@ -45,3 +45,21 @@ class CarrinhoProduto(models.Model):
 
     def __str__(self):
         return f"{self.produto.titulo} ({self.quantidade})"
+
+class Compra(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="compras")
+    protocolo = models.CharField(max_length=20, unique=True)
+    total_pago = models.DecimalField(max_digits=10, decimal_places=2)
+    criado_em = models.DateTimeField(auto_now_add=True)
+    detalhes = models.TextField(blank=True, null=True)  # Informações adicionais
+
+    def __str__(self):
+        return f"{self.protocolo} - {self.usuario.username}"
+    
+class Perfil(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name="perfil")
+    telefone = models.CharField(max_length=15, blank=True, null=True)
+    cep = models.CharField(max_length=9, blank=True, null=True)
+
+    def __str__(self):
+        return f"Perfil de {self.usuario.username}"

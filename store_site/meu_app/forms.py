@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Comentario, Avaliacao
+from .models import Perfil
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=150)
@@ -39,3 +40,24 @@ class AvaliacaoForm(forms.ModelForm):
         fields = ['nota']
 
     
+class EditarPerfilForm(forms.ModelForm):
+    telefone = forms.CharField(required=False, max_length=15, label="Telefone")
+    cep = forms.CharField(required=False, max_length=9, label="CEP")
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']  # Campos do modelo User
+
+    def save(self, commit=True):
+        user = super().save(commit=False)  # Salva os dados do modelo User
+        if commit:
+            user.save()
+            # Atualiza ou cria o perfil associado
+            Perfil.objects.update_or_create(
+                usuario=user,
+                defaults={
+                    'telefone': self.cleaned_data.get('telefone'),
+                    'cep': self.cleaned_data.get('cep'),
+                }
+            )
+        return user

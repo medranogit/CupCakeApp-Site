@@ -1,0 +1,122 @@
+{% extends 'meu_app/base.html' %}
+
+{% block title %}Perfil do Usuário{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <style>
+        .profile-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile-card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+            padding: 15px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #343a40;
+        }
+        .profile-card-body {
+            padding: 20px;
+        }
+        .btn-edit {
+            background-color: #007bff;
+            color: white;
+            border-radius: 50px;
+        }
+        .btn-edit:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
+
+    <!-- Informações do Perfil -->
+    <div class="card profile-card mb-4">
+        <div class="profile-card-header">Informações do Perfil</div>
+        <div class="profile-card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="first_name" class="form-label">Primeiro Nome</label>
+                        <input type="text" id="first_name" name="first_name" class="form-control" value="{{ form.instance.first_name }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="last_name" class="form-label">Sobrenome</label>
+                        <input type="text" id="last_name" name="last_name" class="form-control" value="{{ form.instance.last_name }}" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" id="email" name="email" class="form-control" value="{{ form.instance.email }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="telefone" class="form-label">Telefone</label>
+                        <input type="text" id="telefone" name="telefone" class="form-control" value="{{ form.initial.telefone }}" placeholder="(11) 95081-2705" maxlength="15">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="cep" class="form-label">CEP</label>
+                        <input type="text" id="cep" name="cep" class="form-control" value="{{ form.initial.cep }}" placeholder="XXXXX-XXX" maxlength="9">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success btn-edit">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Histórico de Compras -->
+    <div class="card profile-card">
+        <div class="profile-card-header">Histórico de Compras</div>
+        <div class="profile-card-body">
+            {% if compras %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Protocolo</th>
+                            <th>Total Pago</th>
+                            <th>Data</th>
+                            <th>Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for compra in compras %}
+                        <tr>
+                            <td>{{ compra.protocolo }}</td>
+                            <td>R$ {{ compra.total_pago|floatformat:2 }}</td>
+                            <td>{{ compra.criado_em|date:"d/m/Y H:i" }}</td>
+                            <td>{{ compra.detalhes|default:"Sem detalhes" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">Nenhuma compra realizada ainda.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Máscara para telefone (formato: (11) 95081-2705)
+    document.getElementById('telefone').addEventListener('input', function (e) {
+        let valor = e.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+        if (valor.length > 0) valor = '(' + valor.slice(0, 2) + ') ' + valor.slice(2); // Adiciona parênteses e espaço
+        if (valor.length > 9) valor = valor.slice(0, 9) + '-' + valor.slice(9); // Adiciona o hífen
+        e.target.value = valor.slice(0, 15); // Limita ao tamanho máximo
+    });
+
+    // Máscara para CEP (formato: XXXXX-XXX)
+    document.getElementById('cep').addEventListener('input', function (e) {
+        let valor = e.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+        if (valor.length > 5) valor = valor.slice(0, 5) + '-' + valor.slice(5); // Adiciona o hífen
+        e.target.value = valor.slice(0, 9); // Limita ao tamanho máximo
+    });
+</script>
+{% endblock %}
