@@ -40,7 +40,7 @@
         </tbody>
     </table>
     <div class="text-end">
-        <h4>Total dos Produtos: R$ {{ total_geral }}</h4>
+        <p><strong>Total dos Produtos:</strong> R$ {{ total_geral }}</p>
     </div>
     <hr>
     <h4>Calcular Frete</h4>
@@ -65,10 +65,10 @@
         {{ erro_cep }}
     </div>
     {% endif %}
-    {% if frete is not None %}
+    {% if frete is not None and request.method == 'POST' and 'calcular_frete' in request.POST %}
     <div class="alert alert-info mt-3">
-        <p><strong>Valor do Frete:</strong> R$ {{ frete }}</p>
-        <p><strong>Total com Frete:</strong> R$ {{ total_geral|add:frete }}</p>
+        <p><strong>Valor do Frete:</strong> R$ {{ frete|floatformat:2 }}</p>
+        <p><strong>Total com Frete:</strong> R$ {{ total_geral|add:frete|floatformat:2 }}</p>
     </div>
     {% endif %}
     <div class="text-end mt-4">

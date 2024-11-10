@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="validade" class="form-label">Validade</label>
-                <input type="text" id="validade" name="validade" class="form-control" placeholder="MM/AA" maxlength="5" required>
+                <input type="text" id="validade" name="validade" class="form-control" placeholder="MM/AA" pattern="(?:0[1-9]|1[0-2])/[0-9]{2}" required>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="cvv" class="form-label">CVV</label>
@@ -64,11 +64,11 @@
 
     // Formatação automática para validade (MM/AA)
     document.getElementById('validade').addEventListener('input', function (e) {
-        let valor = e.target.value.replace(/\D/g, ''); // Remove qualquer caractere não numérico
+        let valor = e.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
         if (valor.length > 2) {
-            valor = valor.slice(0, 2) + '/' + valor.slice(2, 4); // Insere a barra após os dois primeiros dígitos
+            valor = valor.slice(0, 2) + '/' + valor.slice(2, 4); // Insere a barra
         }
-        e.target.value = valor.slice(0, 5); // Limita ao máximo de 5 caracteres
+        e.target.value = valor.slice(0, 5); // Limita ao formato MM/AA
     });
 </script>
 {% endblock %}

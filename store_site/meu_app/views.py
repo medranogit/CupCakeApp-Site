@@ -10,10 +10,8 @@ from django.views.decorators.http import require_POST
 import random
 import re
 from django.contrib import messages
-
-
-
-
+from random import randint, uniform
+from decimal import Decimal
 
 
 def home(request):
@@ -53,28 +51,30 @@ def carrinho(request):
     """Exibe a página do carrinho com os itens do usuário e calcula o frete."""
     carrinho = Carrinho.objects.filter(usuario=request.user).first()
     itens = []
-    total_geral = 0
+    total_geral = 0.0  # Certifique-se de usar float
     frete = None
     erro_cep = None
+    total_com_frete = None
 
     if carrinho:
         itens = carrinho.carrinhoproduto_set.all()
-        total_geral = sum(item.subtotal for item in itens)  # Soma de todos os subtotais
+        total_geral = float(sum(item.subtotal for item in itens))  # Converta para float
 
     if request.method == 'POST' and 'calcular_frete' in request.POST:
-        cep = request.POST.get('cep')
-        if re.match(r'^\d{5}-\d{3}$', cep):  # Valida o formato do CEP
-            frete = random.uniform(10, 15)
-            frete = round(frete, 2)
+        cep = request.POST.get('cep', '').strip()
+        if len(cep) == 9:  # Validação básica para "XXXXX-XXX"
+            frete = uniform(10, 15)  # Valor gerado com várias casas decimais
+            total_com_frete = total_geral + frete  # Calcula o total com frete
         else:
-            erro_cep = "CEP inválido. Certifique-se de usar o formato XXXXX-XXX."
+            erro_cep = "CEP inválido. Por favor, insira um CEP no formato XXXXX-XXX."
 
     return render(request, 'meu_app/carrinho.html', {
         'carrinho': carrinho,
         'itens': itens,
         'total_geral': total_geral,
         'frete': frete,
-        'erro_cep': erro_cep,
+        'total_com_frete': total_com_frete,
+        'erro_cep': erro_cep
     })
 
 @login_required
@@ -209,18 +209,40 @@ def finalizar_compra(request):
 @login_required
 def processar_pagamento(request):
     if request.method == 'POST':
-        # Pegue os dados enviados do formulário de pagamento
         nome_cartao = request.POST.get('nome_cartao')
         numero_cartao = request.POST.get('numero_cartao')
         validade = request.POST.get('validade')
         cvv = request.POST.get('cvv')
         parcelas = request.POST.get('parcelas')
 
-        # Simulação de processamento
-        if nome_cartao and numero_cartao and validade and cvv:
-            messages.success(request, 'Pagamento realizado com sucesso!')
-            return redirect('home')  # Redirecionar para a página inicial
-        else:
-            messages.error(request, 'Erro ao processar pagamento. Verifique os dados e tente novamente.')
-            return redirect('finalizar_compra')
+        # Recuperar o carrinho do usuário
+        carrinho = Carrinho.objects.filter(usuario=request.user).first()
+        if carrinho:
+            itens = carrinho.carrinhoproduto_set.all()
+            total_geral = sum(item.subtotal for item in itens)  # Soma os subtotais
+            frete = Decimal(uniform(10, 15))  # Converte para Decimal
+            total_com_frete = total_geral + frete  # Soma o frete ao total
+
+            # Simulação de processamento do pagamento
+            if nome_cartao and numero_cartao and validade and cvv:
+                # Esvaziar o carrinho
+                carrinho.carrinhoproduto_set.all().delete()
+
+                # Converte total para float antes de salvar na sessão
+                request.session['total_com_frete'] = float(total_com_frete)
+
+                return redirect('compra_concluida')
+            else:
+                messages.error(request, 'Erro ao processar pagamento. Verifique os dados e tente novamente.')
+                return redirect('finalizar_compra')
     return redirect('finalizar_compra')
+
+@login_required
+def compra_concluida(request):
+    """Exibe uma página de confirmação de compra com número de protocolo e total."""
+    protocolo = f"PROTO-{randint(100000, 999999)}"  # Gera um número aleatório
+    total_com_frete = request.session.get('total_com_frete', 0)  # Recupera o total da sessão
+    return render(request, 'meu_app/compra_concluida.html', {
+        'protocolo': protocolo,
+        'total_com_frete': total_com_frete
+    })

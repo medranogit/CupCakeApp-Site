@@ -18,4 +18,5 @@ urlpatterns = [
     path('produto/<int:produto_id>/comentar/', views.adicionar_comentario, name='adicionar_comentario'),  # Adicionar comentário
     path('finalizar-compra/', views.finalizar_compra, name='finalizar_compra'),
     path('processar-pagamento/', views.processar_pagamento, name='processar_pagamento'),
+    path('compra-concluida/', views.compra_concluida, name='compra_concluida'),
 ]
