@@ -51,3 +51,13 @@ O **Cupcake App** é uma aplicação Django desenvolvida para gerenciar uma loja
    ```bash
    git clone https://github.com/seu-usuario/cupcake-app.git
    cd cupcake-app
+2. Crie e ative um ambiente virtual:
+    ```bash
+    python -m venv venv
+    venv\Scripts\activate
+3. Inicie o servidor de desenvolvimento:
+    ```bash
+    python manage.py runserver
+4. Acesse o app no navegador:
+    ```bash
+    URL: http://127.0.0.1:8000
