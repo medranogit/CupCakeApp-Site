@@ -6,33 +6,45 @@
 <div class="container mt-5">
     <h1 class="text-center">Pagamento</h1>
     <p class="text-center mt-3">Você está prestes a finalizar sua compra no valor total de:</p>
-    <h2 class="text-center text-success">R$ {{ total_geral }}</h2>
+
+    <!-- Exibe o total com frete -->
+    <h2 class="text-center text-success">R$ {{ total_com_frete|floatformat:2 }}</h2>
+
     <p class="text-center mt-4">Insira os dados do cartão para concluir o pagamento.</p>
 
     <form method="post" action="{% url 'processar_pagamento' %}" class="mt-5">
         {% csrf_token %}
-        
+
+        <!-- Campo oculto para enviar o total com frete -->
+        <input type="hidden" name="total_com_frete" value="{{ total_com_frete|floatformat:2 }}">
+
+        <!-- Nome no cartão -->
         <div class="mb-3">
             <label for="nome_cartao" class="form-label">Nome no Cartão</label>
             <input type="text" id="nome_cartao" name="nome_cartao" class="form-control" placeholder="Nome como aparece no cartão" required>
         </div>
 
+        <!-- Número do cartão -->
         <div class="mb-3">
             <label for="numero_cartao" class="form-label">Número do Cartão</label>
             <input type="text" id="numero_cartao" name="numero_cartao" class="form-control" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" pattern="\d{4}\s\d{4}\s\d{4}\s\d{4}" required>
         </div>
 
         <div class="row">
+            <!-- Validade do cartão -->
             <div class="col-md-6 mb-3">
                 <label for="validade" class="form-label">Validade</label>
                 <input type="text" id="validade" name="validade" class="form-control" placeholder="MM/AA" pattern="(?:0[1-9]|1[0-2])/[0-9]{2}" required>
             </div>
+
+            <!-- CVV -->
             <div class="col-md-6 mb-3">
                 <label for="cvv" class="form-label">CVV</label>
                 <input type="text" id="cvv" name="cvv" class="form-control" placeholder="123" maxlength="3" pattern="\d{3}" required>
             </div>
         </div>
 
+        <!-- Parcelamento -->
         <div class="mb-3">
             <label for="parcelas" class="form-label">Número de Parcelas</label>
             <select id="parcelas" name="parcelas" class="form-select" required>
@@ -44,16 +56,19 @@
             </select>
         </div>
 
+        <!-- Botão de pagamento -->
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary btn-lg">Pagar Agora</button>
         </div>
     </form>
 
+    <!-- Cancelar e voltar à página inicial -->
     <div class="text-center mt-3">
         <a href="{% url 'home' %}" class="btn btn-secondary">Cancelar e Voltar à Página Inicial</a>
     </div>
 </div>
 
+<!-- Scripts de formatação -->
 <script>
     // Formatação automática para número do cartão
     document.getElementById('numero_cartao').addEventListener('input', function (e) {

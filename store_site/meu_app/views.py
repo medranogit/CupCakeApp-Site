@@ -11,7 +11,7 @@ import random
 import re
 from django.contrib import messages
 from random import randint, uniform
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 
 
 def home(request):
@@ -63,8 +63,8 @@ def carrinho(request):
     if request.method == 'POST' and 'calcular_frete' in request.POST:
         cep = request.POST.get('cep', '').strip()
         if len(cep) == 9:  # Validação básica para "XXXXX-XXX"
-            frete = Decimal(f"{uniform(10, 15):.2f}")  # Valor gerado como Decimal
-            total_com_frete = total_geral + frete  # Soma o frete ao total
+            frete = Decimal(f"{uniform(10, 15):.2f}")
+            total_com_frete = total_geral + frete
         else:
             erro_cep = "CEP inválido. Por favor, insira um CEP no formato XXXXX-XXX."
 
@@ -73,9 +73,10 @@ def carrinho(request):
         'itens': itens,
         'total_geral': total_geral,
         'frete': frete,
-        'total_com_frete': total_com_frete,  # Inclui total com frete
-        'erro_cep': erro_cep
+        'total_com_frete': total_com_frete,
+        'erro_cep': erro_cep,
     })
+
 
 @login_required
 def atualizar_quantidade(request, produto_id):
@@ -196,15 +197,16 @@ def adicionar_comentario(request, produto_id):
 
 @login_required
 def finalizar_compra(request):
-    """Exibe uma página fake de pagamento."""
-    carrinho = Carrinho.objects.filter(usuario=request.user).first()
-    total_geral = 0
+    """Exibe a página de pagamento."""
+    total_com_frete = request.GET.get('total_com_frete')
+    try:
+        total_com_frete = Decimal(total_com_frete.replace(',', '.')) if total_com_frete else None
+    except (TypeError, ValueError, InvalidOperation):
+        total_com_frete = None
 
-    if carrinho:
-        itens = carrinho.carrinhoproduto_set.all()
-        total_geral = sum(item.subtotal for item in itens)
+    return render(request, 'meu_app/pagamento.html', {'total_com_frete': total_com_frete})
 
-    return render(request, 'meu_app/pagamento.html', {'total_geral': total_geral})
+
 
 @login_required
 def processar_pagamento(request):
@@ -213,36 +215,41 @@ def processar_pagamento(request):
         numero_cartao = request.POST.get('numero_cartao')
         validade = request.POST.get('validade')
         cvv = request.POST.get('cvv')
-        parcelas = request.POST.get('parcelas')
 
-        # Recuperar o carrinho do usuário
-        carrinho = Carrinho.objects.filter(usuario=request.user).first()
-        if carrinho:
-            itens = carrinho.carrinhoproduto_set.all()
-            total_geral = sum(item.subtotal for item in itens)  # Soma os subtotais
-            frete = Decimal(uniform(10, 15))  # Converte para Decimal
-            total_com_frete = total_geral + frete  # Soma o frete ao total
+        # Recebe o total com frete enviado no formulário
+        total_com_frete = request.POST.get('total_com_frete')
 
-            # Simulação de processamento do pagamento
-            if nome_cartao and numero_cartao and validade and cvv:
-                # Esvaziar o carrinho
-                carrinho.carrinhoproduto_set.all().delete()
-
-                # Converte total para float antes de salvar na sessão
-                request.session['total_com_frete'] = float(total_com_frete)
-
-                return redirect('compra_concluida')
-            else:
-                messages.error(request, 'Erro ao processar pagamento. Verifique os dados e tente novamente.')
+        if total_com_frete:
+            try:
+                # Converte o valor para Decimal e salva como string na sessão
+                total_com_frete = Decimal(total_com_frete.replace(',', '.'))
+                request.session['total_com_frete'] = str(total_com_frete)  # Converte para string
+            except (TypeError, ValueError, InvalidOperation):
+                messages.error(request, 'Erro ao processar o valor total. Tente novamente.')
                 return redirect('finalizar_compra')
+
+        if nome_cartao and numero_cartao and validade and cvv:
+            # Simula pagamento e limpa o carrinho
+            carrinho = Carrinho.objects.filter(usuario=request.user).first()
+            if carrinho:
+                carrinho.carrinhoproduto_set.all().delete()
+            return redirect('compra_concluida')
+        else:
+            messages.error(request, 'Erro ao processar pagamento. Verifique os dados e tente novamente.')
+            return redirect('finalizar_compra')
     return redirect('finalizar_compra')
 
 @login_required
 def compra_concluida(request):
     """Exibe uma página de confirmação de compra com número de protocolo e total."""
-    protocolo = f"PROTO-{randint(100000, 999999)}"  # Gera um número aleatório
-    total_com_frete = request.session.get('total_com_frete', 0)  # Recupera o total da sessão
+    protocolo = f"PROTO-{randint(100000, 999999)}"
+    total_com_frete = request.session.get('total_com_frete', None)
+
+    if total_com_frete:
+        # Converte de volta para Decimal para exibir corretamente
+        total_com_frete = Decimal(total_com_frete)
+
     return render(request, 'meu_app/compra_concluida.html', {
         'protocolo': protocolo,
-        'total_com_frete': total_com_frete
+        'total_com_frete': total_com_frete,
     })

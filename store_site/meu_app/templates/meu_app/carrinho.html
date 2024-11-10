@@ -77,6 +77,7 @@
         <!-- Verifica se o frete foi calculado -->
         {% if frete is not None %}
         <form method="get" action="{% url 'finalizar_compra' %}">
+            <input type="hidden" name="total_com_frete" value="{{ total_com_frete|floatformat:2 }}">
             <button type="submit" class="btn btn-success btn-lg">Finalizar Compra</button>
         </form>
         {% else %}
