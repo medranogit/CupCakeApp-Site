@@ -65,17 +65,27 @@
         {{ erro_cep }}
     </div>
     {% endif %}
-    {% if frete is not None and request.method == 'POST' and 'calcular_frete' in request.POST %}
+    {% if frete is not None %}
     <div class="alert alert-info mt-3">
         <p><strong>Valor do Frete:</strong> R$ {{ frete|floatformat:2 }}</p>
-        <p><strong>Total com Frete:</strong> R$ {{ total_geral|add:frete|floatformat:2 }}</p>
+        {% if total_com_frete %}
+        <p><strong>Total com Frete:</strong> R$ {{ total_com_frete|floatformat:2 }}</p>
+        {% endif %}
     </div>
     {% endif %}
     <div class="text-end mt-4">
+        <!-- Verifica se o frete foi calculado -->
+        {% if frete is not None %}
         <form method="get" action="{% url 'finalizar_compra' %}">
             <button type="submit" class="btn btn-success btn-lg">Finalizar Compra</button>
         </form>
+        {% else %}
+        <button type="button" class="btn btn-secondary btn-lg" disabled>
+            Finalizar a Compra
+        </button>
+        {% endif %}
     </div>
+    
     {% else %}
     <p>Seu carrinho está vazio.</p>
     {% endif %}

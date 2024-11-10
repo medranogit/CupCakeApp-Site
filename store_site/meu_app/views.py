@@ -51,20 +51,20 @@ def carrinho(request):
     """Exibe a página do carrinho com os itens do usuário e calcula o frete."""
     carrinho = Carrinho.objects.filter(usuario=request.user).first()
     itens = []
-    total_geral = 0.0  # Certifique-se de usar float
+    total_geral = Decimal(0.0)
     frete = None
     erro_cep = None
     total_com_frete = None
 
     if carrinho:
         itens = carrinho.carrinhoproduto_set.all()
-        total_geral = float(sum(item.subtotal for item in itens))  # Converta para float
+        total_geral = sum(item.subtotal for item in itens)
 
     if request.method == 'POST' and 'calcular_frete' in request.POST:
         cep = request.POST.get('cep', '').strip()
         if len(cep) == 9:  # Validação básica para "XXXXX-XXX"
-            frete = uniform(10, 15)  # Valor gerado com várias casas decimais
-            total_com_frete = total_geral + frete  # Calcula o total com frete
+            frete = Decimal(f"{uniform(10, 15):.2f}")  # Valor gerado como Decimal
+            total_com_frete = total_geral + frete  # Soma o frete ao total
         else:
             erro_cep = "CEP inválido. Por favor, insira um CEP no formato XXXXX-XXX."
 
@@ -73,7 +73,7 @@ def carrinho(request):
         'itens': itens,
         'total_geral': total_geral,
         'frete': frete,
-        'total_com_frete': total_com_frete,
+        'total_com_frete': total_com_frete,  # Inclui total com frete
         'erro_cep': erro_cep
     })
 
