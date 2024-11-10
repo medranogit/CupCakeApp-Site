@@ -1,0 +1,53 @@
+{% extends 'meu_app/base.html' %}
+
+{% block title %}Suporte - Cupcake App{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <style>
+        .support-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .support-card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+            padding: 15px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #343a40;
+        }
+        .support-card-body {
+            padding: 20px;
+        }
+    </style>
+
+    <div class="card support-card">
+        <div class="support-card-header">Fale com o Suporte</div>
+        <div class="support-card-body">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="assunto" class="form-label">Assunto</label>
+                    <input type="text" id="assunto" name="assunto" class="form-control" placeholder="Digite o assunto" required>
+                </div>
+                <div class="mb-3">
+                    <label for="mensagem" class="form-label">Mensagem</label>
+                    <textarea id="mensagem" name="mensagem" class="form-control" rows="5" placeholder="Digite sua mensagem ou dúvida" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">Enviar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

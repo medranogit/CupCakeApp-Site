@@ -301,3 +301,18 @@ def perfil(request):
         'usuario': usuario,
         'compras': compras,
     })
+
+@login_required
+def suporte(request):
+    if request.method == 'POST':
+        assunto = request.POST.get('assunto', '')
+        mensagem = request.POST.get('mensagem', '')
+
+        if assunto and mensagem:
+            # Simulação de envio bem-sucedido (apenas mostra mensagem de sucesso)
+            messages.success(request, 'Mensagem enviada com sucesso! Agradecemos seu contato.')
+            return redirect('home')  # Redireciona para a homepage
+        else:
+            messages.error(request, 'Por favor, preencha todos os campos.')
+
+    return render(request, 'meu_app/suporte.html')

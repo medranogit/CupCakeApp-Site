@@ -4,6 +4,17 @@
 {% block title %}Home - Store Site{% endblock %}
 
 {% block content %}
+<!-- Exibição de mensagens flash -->
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} text-center" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
 <h1 class="text-center text-primary mb-4">Produtos</h1>
 <div class="row">
     {% for produto in produtos %}
