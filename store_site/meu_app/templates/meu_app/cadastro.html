@@ -1,0 +1,24 @@
+{% extends 'meu_app/base.html' %}
+
+
+{% block title %}Cadastro - Store Site{% endblock %}
+
+{% block content %}
+<h1>Cadastrar</h1>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="username">Usuário</label>
+        <input type="text" class="form-control" id="username" name="username" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <div class="form-group">
+        <label for="password2">Confirme a Senha</label>
+        <input type="password" class="form-control" id="password2" name="password2" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'meu_app/base.html' %}
+
+{% load static %} <!-- Carrega as tags para arquivos estáticos -->
+
+
+{% block title %}Sobre - Cupcake App{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center text-primary mb-4">Sobre Nós</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{% static 'images/about_cupcake.jpg' %}" alt="Cupcakes Deliciosos" class="img-fluid rounded shadow">
+        </div>
+        <div class="col-md-6">
+            <p class="text-secondary">O <strong>Cupcake App</strong> nasceu do amor por criar doces que fazem momentos simples se tornarem inesquecíveis. Desde 2020, temos nos dedicado a trazer sorrisos aos nossos clientes com receitas cuidadosamente elaboradas, utilizando apenas ingredientes frescos e de alta qualidade.</p>
+            <p class="text-secondary">Nossa missão é transformar sua experiência com doces, oferecendo produtos que não apenas encantam o paladar, mas também o coração. Cada cupcake é feito com paixão e atenção aos detalhes, garantindo que cada mordida seja uma celebração.</p>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <h3 class="text-success">Tradição</h3>
+            <p class="text-muted">Mais de 4 anos trazendo qualidade e inovação aos nossos produtos, sempre mantendo as raízes da confeitaria artesanal.</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <h3 class="text-success">Ingredientes de Qualidade</h3>
+            <p class="text-muted">Acreditamos que a base para um excelente doce começa com ingredientes frescos e cuidadosamente selecionados.</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <h3 class="text-success">Sustentabilidade</h3>
+            <p class="text-muted">Nos preocupamos com o meio ambiente e estamos sempre buscando formas sustentáveis de operar e crescer.</p>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <h2 class="text-center text-primary mb-4">Conheça Nossa Equipe</h2>
+    <div class="row">
+        <div class="col-md-3 text-center">
+            <img src="{% static 'images/team_member1.jpg' %}" alt="Membro da Equipe" class="img-fluid rounded-circle shadow mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+            <h5 class="text-primary">Ana Silva</h5>
+            <p class="text-muted">Fundadora & Chef Confeiteira</p>
+        </div>
+        <div class="col-md-3 text-center">
+            <img src="{% static 'images/team_member2.jpg' %}" alt="Membro da Equipe" class="img-fluid rounded-circle shadow mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+            <h5 class="text-primary">João Oliveira</h5>
+            <p class="text-muted">Gerente de Operações</p>
+        </div>
+        <div class="col-md-3 text-center">
+            <img src="{% static 'images/team_member3.jpg' %}" alt="Membro da Equipe" class="img-fluid rounded-circle shadow mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+            <h5 class="text-primary">Carla Mendes</h5>
+            <p class="text-muted">Designer de Sabores</p>
+        </div>
+        <div class="col-md-3 text-center">
+            <img src="{% static 'images/team_member4.jpg' %}" alt="Membro da Equipe" class="img-fluid rounded-circle shadow mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+            <h5 class="text-primary">Lucas Santos</h5>
+            <p class="text-muted">Especialista em Logística</p>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <h2 class="text-center text-primary mb-4">Nossa Visão</h2>
+    <p class="text-center text-muted">"Queremos tornar o mundo mais doce, uma mordida de cada vez. Seja uma festa de aniversário, um casamento ou um simples café da tarde, o Cupcake App está aqui para tornar cada momento especial."</p>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'home' %}" class="btn btn-primary shadow-sm">Voltar para a Loja</a>
+    </div>
+</div>
+{% endblock %}

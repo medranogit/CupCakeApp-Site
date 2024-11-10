@@ -1,0 +1,69 @@
+{% extends 'meu_app/base.html' %}
+{% load static %}
+
+{% block title %}Home - Store Site{% endblock %}
+
+{% block content %}
+<h1 class="text-center text-primary mb-4">Produtos</h1>
+<div class="row">
+    {% for produto in produtos %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow h-100">
+            {% if produto.imagem %}
+            <img src="{{ produto.imagem.url }}" class="card-img-top" alt="{{ produto.titulo }}" style="height: 300px; object-fit: cover;">
+            {% else %}
+            <div class="card-img-top d-flex justify-content-center align-items-center bg-light" style="height: 200px;">
+                <p class="text-muted">Sem imagem</p>
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title text-truncate">{{ produto.titulo }}</h5>
+                <p class="card-text text-muted">{{ produto.descricao|truncatewords:10 }}</p>
+                <p class="card-text text-success h5"><strong>R$ {{ produto.preco }}</strong></p>
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'produto_detalhes' produto.id %}" class="btn btn-primary btn-sm shadow-sm">Ver Detalhes</a>
+                    <button 
+                        class="btn btn-success btn-sm shadow-sm adicionar-carrinho" 
+                        data-produto-id="{{ produto.id }}">
+                        Adicionar ao Carrinho
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.adicionar-carrinho').forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();  // Previne comportamento padrão do botão
+                const produtoId = this.getAttribute('data-produto-id');
+                const url = `/adicionar_carrinho/${produtoId}/`; // URL gerada dinamicamente
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}', // Adicione o token CSRF para segurança
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Atualiza a contagem do carrinho no menu
+                    const badge = document.querySelector('.navbar .badge');
+                    if (badge) {
+                        badge.textContent = data.total_itens;
+                    } else {
+                        const newBadge = document.createElement('span');
+                        newBadge.className = 'badge badge-primary';
+                        newBadge.textContent = data.total_itens;
+                        document.querySelector('.navbar .nav-link[href="/carrinho/"]').appendChild(newBadge);
+                    }
+                })
+                .catch(error => console.error('Erro ao adicionar ao carrinho:', error));
+            });
+        });
+    });
+</script>
+{% endblock %}
