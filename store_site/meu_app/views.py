@@ -21,7 +21,7 @@ from django.contrib import messages
 def home(request):
     """Exibe a página inicial com a lista de produtos."""
     produtos = Produto.objects.all()  # Recupera todos os produtos do banco de dados
-    return render(request, 'meu_app/home.html', {'produtos': produtos})
+    return render(request, 'meu_app/index.html', {'produtos': produtos})
 
 
 def produto_detalhes(request, produto_id):
@@ -128,7 +128,7 @@ def registro(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect('index')
     else:
         form = RegistroForm()
     return render(request, 'meu_app/registro.html', {'form': form})
@@ -140,14 +140,14 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('index')
         else:
             return render(request, 'meu_app/login.html', {'error': 'Credenciais inválidas'})
     return render(request, 'meu_app/login.html')
 
 def logout_user(request):
     logout(request)
-    return redirect('home')
+    return redirect('index')
 
 def produto_detalhes(request, produto_id):
     produto = get_object_or_404(Produto, id=produto_id)
@@ -311,7 +311,7 @@ def suporte(request):
         if assunto and mensagem:
             # Simulação de envio bem-sucedido (apenas mostra mensagem de sucesso)
             messages.success(request, 'Mensagem enviada com sucesso! Agradecemos seu contato.')
-            return redirect('home')  # Redireciona para a homepage
+            return redirect('index')  # Redireciona para a homepage
         else:
             messages.error(request, 'Por favor, preencha todos os campos.')
 

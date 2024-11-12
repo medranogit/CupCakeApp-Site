@@ -13,14 +13,14 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow">
-            <a class="navbar-brand text-primary" href="/">Cupcake App</a>
+            <a class="navbar-brand text-primary" href="/">Cupcake Store</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link" href="{% url 'index' %}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'about' %}">Sobre</a>
@@ -67,7 +67,8 @@
         {% block content %}{% endblock %}
     </main>
     <footer class="text-center py-4 bg-light">
-        <p>&copy; 2024 Store Site. Todos os direitos reservados.</p>
+        <p>&copy; Cupcake Store. Todos os direitos reservados</p>
+        <p>Site destinado a trabalho academico </p>
     </footer>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
