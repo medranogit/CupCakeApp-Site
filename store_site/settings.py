@@ -149,14 +149,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'  # Redirecionar para a home após login
 LOGOUT_REDIRECT_URL = '/'  # Redirecionar para a home após logout
-
-# Verificar se estamos em um ambiente onde o Django já está configurado
-if os.environ.get('CREATE_SUPERUSER', 'False') == 'True':
-    django.setup()
-    # Cria o superusuário se não existir
-    if not User.objects.filter(username=os.environ.get("DJANGO_SUPERUSER_USERNAME", "admin")).exists():
-        User.objects.create_superuser(
-            username=os.environ.get("DJANGO_SUPERUSER_USERNAME", "admin"),
-            email=os.environ.get("DJANGO_SUPERUSER_EMAIL", "admin@example.com"),
-            password=os.environ.get("DJANGO_SUPERUSER_PASSWORD", "admin@vini312")
-        )
