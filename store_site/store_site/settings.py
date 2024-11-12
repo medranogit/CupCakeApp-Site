@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*qr40+fm*ad)!epr$g@ys90p#_wu4gmr=8_mih3pz^am1y)&a$'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("SECRET_KEY")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -84,10 +84,16 @@ WSGI_APPLICATION = 'store_site.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': dj_database_url.parse(
+#         os.environ.get("DATABASE_URL", "postgresql://cupcake_db_user:M1jgPkKsrfLgLhSK0feKMaYQeErZzFST@dpg-cspc108gph6c73d02jig-a.oregon-postgres.render.com/cupcake_db")
+#     )
+# }
+
+database_url = os.environ.get("DATABASE_URL")
+
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get("DATABASE_URL", "postgresql://cupcake_db_user:M1jgPkKsrfLgLhSK0feKMaYQeErZzFST@dpg-cspc108gph6c73d02jig-a.oregon-postgres.render.com/cupcake_db")
-    )
+    'default': dj_database_url.parse(database_url)
 }
 
 
