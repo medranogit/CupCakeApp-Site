@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+from django.contrib.auth.models import User
+import django
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +32,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
-# ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
@@ -147,3 +149,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'  # Redirecionar para a home após login
 LOGOUT_REDIRECT_URL = '/'  # Redirecionar para a home após logout
+
+# Verificar se estamos em um ambiente onde o Django já está configurado
+if os.environ.get('CREATE_SUPERUSER', 'False') == 'True':
+    django.setup()
+    # Cria o superusuário se não existir
+    if not User.objects.filter(username=os.environ.get("DJANGO_SUPERUSER_USERNAME", "admin")).exists():
+        User.objects.create_superuser(
+            username=os.environ.get("DJANGO_SUPERUSER_USERNAME", "admin"),
+            email=os.environ.get("DJANGO_SUPERUSER_EMAIL", "admin@example.com"),
+            password=os.environ.get("DJANGO_SUPERUSER_PASSWORD", "admin@vini312")
+        )
