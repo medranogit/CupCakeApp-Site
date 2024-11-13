@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Comentario, Avaliacao
-from .models import Perfil
+from .models import Comentario, Avaliacao, Perfil
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=150)
@@ -39,7 +38,6 @@ class AvaliacaoForm(forms.ModelForm):
         model = Avaliacao
         fields = ['nota']
 
-    
 class EditarPerfilForm(forms.ModelForm):
     telefone = forms.CharField(required=False, max_length=15, label="Telefone")
     cep = forms.CharField(required=False, max_length=9, label="CEP")

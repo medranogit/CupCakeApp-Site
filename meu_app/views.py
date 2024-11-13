@@ -1,20 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.db.models import Avg
-from .models import Produto, Comentario, Avaliacao, Carrinho, CarrinhoProduto, Compra, Perfil
-from .forms import RegistroForm, ComentarioForm, AvaliacaoForm
-from django.db.models import Sum  # Import para somar as quantidades no carrinho
+from django.db.models import Avg, Sum
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-import random
-import re
 from django.contrib import messages
+
 from random import randint, uniform
 from decimal import Decimal, InvalidOperation
-from .forms import EditarPerfilForm
-from .forms import EditarPerfilForm
-from django.contrib import messages
+
+from .models import Produto, Comentario, Avaliacao, Carrinho, CarrinhoProduto, Compra, Perfil
+from .forms import RegistroForm, ComentarioForm, AvaliacaoForm, EditarPerfilForm
 
 
 
