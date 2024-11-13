@@ -1,2 +1,96 @@
 venv/
 *.pyc
+__pycache__
+
+# Sistema
+*.DS_Store
+*.swp
+*.swo
+Thumbs.db
+desktop.ini
+
+# Python
+*.pyc
+*.pyo
+*.pyd
+*.pyo
+__pycache__/
+*.log
+
+# Virtualenv
+venv/
+env/
+ENV/
+*.env
+*.venv
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+/media/
+staticfiles/
+*.bak
+
+# Migrations (Opcional, mas não recomendado ignorar migrações para projetos em equipe)
+# **/migrations/
+
+# Configuração Local
+*.env
+.env.local
+.env.*.local
+.envrc
+settings_local.py
+
+# Dependências
+.Python
+*.egg-info/
+.eggs/
+*.egg
+
+# Node e Frontend
+node_modules/
+npm-debug.log
+yarn-error.log
+coverage/
+dist/
+
+# Build e Distribuição
+build/
+dist/
+*.spec
+*.manifest
+
+# Logs
+*.log
+*.out
+*.err
+
+# Arquivos gerados pelo Docker
+docker-compose.override.yml
+*.pid
+
+# Arquivos de Teste
+.coverage
+htmlcov/
+.cache/
+
+# Certificados Locais (Certbot ou Django SSL local)
+*.pem
+*.key
+
+# Arquivos de Containerização
+.Dockerfile.swp
+*.swp
+
+# Outras Exclusões Customizadas
+config/settings/local.py  # Se você tiver um arquivo local específico para configurações
+
+# Anotações Temporárias
+TODO
+FIXME

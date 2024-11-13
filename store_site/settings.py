@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
-from django.contrib.auth.models import User
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +27,17 @@ SECRET_KEY = 'django-insecure-*qr40+fm*ad)!epr$g@ys90p#_wu4gmr=8_mih3pz^am1y)&a$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = [
+    'cupcakesite-collegerwork.fly.dev',
+    '127.0.0.1',  # Para desenvolvimento local, se necessário
+    'localhost',
+]
+# ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://cupcakesite-collegerwork.fly.dev',  # Substitua pelo seu domínio real
+]
+
 
 # Application definition
 
@@ -91,9 +100,10 @@ WSGI_APPLICATION = 'store_site.wsgi.application'
 # }
 
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get("DATABASE_URL", "postgresql://cupcake_db_user:M1jgPkKsrfLgLhSK0feKMaYQeErZzFST@dpg-cspc108gph6c73d02jig-a.oregon-postgres.render.com/cupcake_db")
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
