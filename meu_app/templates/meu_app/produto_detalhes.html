@@ -24,9 +24,11 @@
         <div class="col-md-6">
             <p class="text-secondary"><strong>Descrição:</strong> {{ produto.descricao }}</p>
             <p class="text-success h4"><strong>Preço:</strong> R$ {{ produto.preco }}</p>
-            <button class="btn btn-success btn-lg mt-3 shadow-sm adicionar-carrinho" data-produto-id="{{ produto.id }}">
-                Adicionar ao Carrinho
-            </button>
+            <div class="text-center">
+                <button class="btn btn-success btn-lg mt-3 shadow-sm adicionar-carrinho" data-produto-id="{{ produto.id }}">
+                    Adicionar ao Carrinho
+                </button>
+            </div>
         </div>
     </div>
 
