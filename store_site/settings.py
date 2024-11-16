@@ -28,10 +28,11 @@ SECRET_KEY = 'django-insecure-*qr40+fm*ad)!epr$g@ys90p#_wu4gmr=8_mih3pz^am1y)&a$
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'cupcakesite-collegerwork.fly.dev',
-    '127.0.0.1',  # Para desenvolvimento local, se necessário
+    '127.0.0.1',
     'localhost',
+    '35.222.20.114',  # Adicione o IP público aqui
 ]
+
 # ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 CSRF_TRUSTED_ORIGINS = [
@@ -157,3 +158,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'  # Redirecionar para a home após login
 LOGOUT_REDIRECT_URL = '/'  # Redirecionar para a home após logout
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
