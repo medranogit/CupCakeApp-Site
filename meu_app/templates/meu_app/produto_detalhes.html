@@ -4,39 +4,105 @@
 
 {% block content %}
 <div class="container my-4">
-    <!-- Título do produto -->
-    <h1 class="text-center text-primary mb-4">{{ produto.titulo }}</h1>
+    <style>
+        .product-detail-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
 
-    <!-- Detalhes do produto -->
-    <div class="row">
+        .product-info {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .product-title {
+            color: var(--bs-primary);
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .product-description {
+            color: #6c757d;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-price {
+            color: #28a745;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+        }
+
+        .comments-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        .comment-card {
+            border: none;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .comment-form {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .btn-add-cart {
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 2rem;
+        }
+        
+    </style>
+
+    <div class="row g-4">
         <!-- Imagem do produto -->
         <div class="col-md-6">
             {% if produto.imagem %}
-            <img src="{{ produto.imagem.url }}" alt="{{ produto.titulo }}" class="img-fluid rounded shadow" style="max-height: 400px; object-fit: cover;">
+            <img src="{{ produto.imagem.url }}" alt="{{ produto.titulo }}" class="product-detail-image">
             {% else %}
-            <div class="d-flex justify-content-center align-items-center bg-light rounded shadow" style="width: 100%; height: 400px;">
-                <p class="text-muted">Sem imagem disponível</p>
+            <div class="d-flex justify-content-center align-items-center bg-light product-detail-image">
+                <i class="fas fa-birthday-cake fa-3x text-muted"></i>
             </div>
             {% endif %}
         </div>
 
         <!-- Informações do produto -->
         <div class="col-md-6">
-            <p class="text-secondary"><strong>Descrição:</strong> {{ produto.descricao }}</p>
-            <p class="text-success h4"><strong>Preço:</strong> R$ {{ produto.preco }}</p>
-            <div class="text-center">
-                <button class="btn btn-success btn-lg mt-3 shadow-sm adicionar-carrinho" data-produto-id="{{ produto.id }}">
-                    Adicionar ao Carrinho
-                </button>
+            <div class="product-info">
+                <h1 class="product-title">{{ produto.titulo }}</h1>
+                <p class="product-description">{{ produto.descricao }}</p>
+                <p class="product-price">R$ {{ produto.preco }}</p>
+                <div class="text-center">
+                    <button class="btn btn-success btn-lg btn-add-cart shadow-sm adicionar-carrinho" 
+                            data-produto-id="{{ produto.id }}">
+                        <i class="fas fa-shopping-cart me-2"></i>Adicionar ao Carrinho
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <hr class="my-4">
-
     <!-- Seção de Avaliação e Comentários -->
-    <div class="bg-light p-4 rounded shadow-sm">
-        <h2 class="text-center text-secondary mb-4">Comentários e Avaliações</h2>
+    <div class="comments-section">
+        <h2 class="text-primary text-center mb-4">Comentários e Avaliações</h2>
 
         <!-- Exibir comentários -->
         {% if comentarios %}

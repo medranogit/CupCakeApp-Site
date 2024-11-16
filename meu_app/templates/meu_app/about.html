@@ -7,68 +7,181 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center text-primary mb-4">Sobre Nós</h1>
+    <style>
+        .image-container {
+            position: relative;
+            padding: 15px;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .image-container::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid var(--bs-primary);
+            border-radius: 1.2rem;
+            z-index: -1;
+        }
+        
+        .about-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 0.8rem;
+            border: 8px solid white;
+        }
+
+        .team-member-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .vision-section {
+            background-color: var(--bs-primary);
+            color: white;
+            padding: 3rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .values-card {
+            height: 100%;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .back-button {
+            padding-left: 3rem;
+            padding-right: 3rem;
+        }
+
+        .mt-5, .my-5{
+            margin-top: 1rem !important;
+        }
+
+    </style>
+
+    <!-- Hero Section -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 text-primary fw-bold mb-4">Sobre Nós</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <p class="lead text-muted">Transformando momentos especiais em memórias doces desde 2020</p>
+            </div>
+        </div>
+    </div>
     
-    <div class="row">
+    <!-- História Section -->
+    <div class="row align-items-center mb-5">
         <div class="col-md-6">
-            <img src="{% static 'images/about_cupcake.jpg' %}" alt="Cupcakes Deliciosos" class="img-fluid rounded shadow">
+            <div class="image-container position-relative">
+                <img src="{% static 'images/about_cupcake.jpg' %}" alt="Cupcakes Deliciosos" class="about-image shadow-lg">
+                <div class="image-border position-absolute" 
+                     style="top: -10px; left: -10px; right: 10px; bottom: 10px; border: 2px solid var(--bs-primary); border-radius: 1rem; z-index: -1;"></div>
+            </div>
         </div>
         <div class="col-md-6">
-            <p class="text-secondary">O <strong>Cupcake App</strong> nasceu do amor por criar doces que fazem momentos simples se tornarem inesquecíveis. Desde 2020, temos nos dedicado a trazer sorrisos aos nossos clientes com receitas cuidadosamente elaboradas, utilizando apenas ingredientes frescos e de alta qualidade.</p>
-            <p class="text-secondary">Nossa missão é transformar sua experiência com doces, oferecendo produtos que não apenas encantam o paladar, mas também o coração. Cada cupcake é feito com paixão e atenção aos detalhes, garantindo que cada mordida seja uma celebração.</p>
+            <div class="p-4">
+                <h2 class="h3 text-primary mb-4">Nossa História</h2>
+                <p class="text-secondary">O <strong>Cupcake App</strong> nasceu do amor por criar doces que fazem momentos simples se tornarem inesquecíveis. Desde 2020, temos nos dedicado a trazer sorrisos aos nossos clientes com receitas cuidadosamente elaboradas.</p>
+                <p class="text-secondary">Nossa missão é transformar sua experiência com doces, oferecendo produtos que não apenas encantam o paladar, mas também o coração. Cada cupcake é feito com paixão e atenção aos detalhes.</p>
+            </div>
         </div>
     </div>
 
-    <hr class="my-5">
-
-    <div class="row">
-        <div class="col-md-4 text-center">
-            <h3 class="text-success">Tradição</h3>
-            <p class="text-muted">Mais de 4 anos trazendo qualidade e inovação aos nossos produtos, sempre mantendo as raízes da confeitaria artesanal.</p>
-        </div>
-        <div class="col-md-4 text-center">
-            <h3 class="text-success">Ingredientes de Qualidade</h3>
-            <p class="text-muted">Acreditamos que a base para um excelente doce começa com ingredientes frescos e cuidadosamente selecionados.</p>
-        </div>
-        <div class="col-md-4 text-center">
-            <h3 class="text-success">Sustentabilidade</h3>
-            <p class="text-muted">Nos preocupamos com o meio ambiente e estamos sempre buscando formas sustentáveis de operar e crescer.</p>
-        </div>
-    </div>
-
-    <hr class="my-5">
-
-    <h2 class="text-center text-primary mb-4">Conheça Nossa Equipe</h2>
-    <div class="row">
-        <div class="col-md-3 text-center">
-            <img src="{% static 'images/team_member1.jpg' %}" alt="Membro da Equipe" class="img-fluid rounded-circle shadow mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-            <h5 class="text-primary">Ana Silva</h5>
-            <p class="text-muted">Fundadora & Chef Confeiteira</p>
-        </div>
-        <div class="col-md-3 text-center">
-            <img src="{% static 'images/team_member2.jpg' %}" alt="Membro da Equipe" class="img-fluid rounded-circle shadow mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-            <h5 class="text-primary">João Oliveira</h5>
-            <p class="text-muted">Gerente de Operações</p>
-        </div>
-        <div class="col-md-3 text-center">
-            <img src="{% static 'images/team_member3.jpg' %}" alt="Membro da Equipe" class="img-fluid rounded-circle shadow mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-            <h5 class="text-primary">Carla Mendes</h5>
-            <p class="text-muted">Designer de Sabores</p>
-        </div>
-        <div class="col-md-3 text-center">
-            <img src="{% static 'images/team_member4.jpg' %}" alt="Membro da Equipe" class="img-fluid rounded-circle shadow mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-            <h5 class="text-primary">Lucas Santos</h5>
-            <p class="text-muted">Especialista em Logística</p>
+    <!-- Valores Section -->
+    <div class="bg-light rounded-lg shadow-sm p-5 mb-5">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="values-card text-center p-4">
+                    <i class="fas fa-history fa-3x text-primary mb-3"></i>
+                    <h3 class="h4 text-primary">Tradição</h3>
+                    <p class="text-muted">Mais de 4 anos trazendo qualidade e inovação aos nossos produtos, mantendo as raízes da confeitaria artesanal.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="values-card text-center p-4">
+                    <i class="fas fa-star fa-3x text-primary mb-3"></i>
+                    <h3 class="h4 text-primary">Qualidade</h3>
+                    <p class="text-muted">Acreditamos que a base para um excelente doce começa com ingredientes frescos e cuidadosamente selecionados.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="values-card text-center p-4">
+                    <i class="fas fa-leaf fa-3x text-primary mb-3"></i>
+                    <h3 class="h4 text-primary">Sustentabilidade</h3>
+                    <p class="text-muted">Nos preocupamos com o meio ambiente e estamos sempre buscando formas sustentáveis de operar e crescer.</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <hr class="my-5">
+    <!-- Team Section -->
+    <div class="mb-5">
+        <h2 class="display-6 text-primary text-center mb-5">Nossa Equipe</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="text-center p-3">
+                        <img src="{% static 'images/team_member1.jpg' %}" alt="Ana Silva" class="rounded-circle shadow mb-3 team-member-image">
+                        <h5 class="text-primary">Ana Silva</h5>
+                        <p class="text-muted mb-0">Fundadora & Chef Confeiteira</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="text-center p-3">
+                        <img src="{% static 'images/team_member2.jpg' %}" alt="João Oliveira" class="rounded-circle shadow mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        <h5 class="text-primary">João Oliveira</h5>
+                        <p class="text-muted mb-0">Gerente de Operações</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="text-center p-3">
+                        <img src="{% static 'images/team_member3.jpg' %}" alt="Carla Mendes" class="rounded-circle shadow mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        <h5 class="text-primary">Carla Mendes</h5>
+                        <p class="text-muted mb-0">Designer de Sabores</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="text-center p-3">
+                        <img src="{% static 'images/team_member4.jpg' %}" alt="Lucas Santos" class="rounded-circle shadow mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        <h5 class="text-primary">Lucas Santos</h5>
+                        <p class="text-muted mb-0">Especialista em Logística</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <h2 class="text-center text-primary mb-4">Nossa Visão</h2>
-    <p class="text-center text-muted">"Queremos tornar o mundo mais doce, uma mordida de cada vez. Seja uma festa de aniversário, um casamento ou um simples café da tarde, o Cupcake App está aqui para tornar cada momento especial."</p>
+    <!-- Vision Section -->
+    <div class="bg-primary text-white p-5 rounded-lg shadow mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 text-center">
+                <h2 class="h3 mb-4">Nossa Visão</h2>
+                <p class="lead">"Queremos tornar o mundo mais doce, uma mordida de cada vez. Seja uma festa de aniversário, um casamento ou um simples café da tarde, o Cupcake App está aqui para tornar cada momento especial."</p>
+            </div>
+        </div>
+    </div>
 
-    <div class="text-center mt-4">
-        <a href="{% url 'index' %}" class="btn btn-primary shadow-sm">Voltar para a Loja</a>
+    <div class="text-center mb-5">
+        <a href="{% url 'index' %}" class="btn btn-lg btn-primary shadow-sm back-button">Voltar para a Loja</a>
     </div>
 </div>
+
+<!-- Adicione no head do seu base.html -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 {% endblock %}
