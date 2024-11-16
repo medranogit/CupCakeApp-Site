@@ -48,22 +48,28 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.adicionar-carrinho').forEach(button => {
-            button.addEventListener('click', function (e) {
-                e.preventDefault();  // Previne comportamento padrão do botão
+document.addEventListener('DOMContentLoaded', function () {
+    const addToCartButtons = document.querySelectorAll('.adicionar-carrinho');
+    const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            {% if not user.is_authenticated %}
+                loginModal.show();
+            {% else %}
                 const produtoId = this.getAttribute('data-produto-id');
-                const url = `/adicionar_carrinho/${produtoId}/`; // URL gerada dinamicamente
+                const url = `/adicionar_carrinho/${produtoId}/`;
+                
                 fetch(url, {
                     method: 'POST',
                     headers: {
-                        'X-CSRFToken': '{{ csrf_token }}', // Adicione o token CSRF para segurança
+                        'X-CSRFToken': '{{ csrf_token }}',
                         'Content-Type': 'application/json'
                     }
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Atualiza a contagem do carrinho no menu
                     const badge = document.querySelector('.navbar .badge');
                     if (badge) {
                         badge.textContent = data.total_itens;
@@ -74,9 +80,28 @@
                         document.querySelector('.navbar .nav-link[href="/carrinho/"]').appendChild(newBadge);
                     }
                 })
-                .catch(error => console.error('Erro ao adicionar ao carrinho:', error));
-            });
+                .catch(error => console.error('Erro:', error));
+            {% endif %}
         });
     });
+});
 </script>
+
+<!-- Modal de Login -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Atenção</h5>
+            </div>
+            <div class="modal-body">
+                <p>Para adicionar produtos ao carrinho, é necessário fazer login.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <a href="{% url 'login' %}" class="btn btn-primary">Fazer Login</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
