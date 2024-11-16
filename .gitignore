@@ -29,7 +29,6 @@ ENV/
 db.sqlite3
 db.sqlite3-journal
 /media/
-staticfiles/
 *.bak
 
 # Migrations (Opcional, mas não recomendado ignorar migrações para projetos em equipe)
