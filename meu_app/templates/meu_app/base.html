@@ -29,11 +29,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'about' %}">Sobre</a>
                     </li>
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'suporte' %}">Suporte</a>
                     </li>
+                    {% endif %}
                 </ul>
                 <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'carrinho' %}">
                             Carrinho
@@ -42,6 +45,7 @@
                             {% endif %}
                         </a>
                     </li>
+                    {% endif %}
                     {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
