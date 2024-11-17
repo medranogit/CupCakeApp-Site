@@ -19,9 +19,14 @@
                 <i class="fas fa-birthday-cake"></i>
                 Cupcake Store
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <div class="mobile-buttons">
+                <button id="theme-toggle" class="btn btn-outline-secondary">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
@@ -71,12 +76,12 @@
                         <a class="btn btn-outline-secondary shadow-sm" href="{% url 'registro' %}">Registrar</a>
                     </li>
                     {% endif %}
+                    <li class="nav-item">
+                        <button id="theme-toggle" class="btn btn-outline-secondary">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
                 </ul>
-                <div class="nav-item ms-3">
-                    <button id="theme-toggle" class="btn btn-outline-secondary">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                </div>
             </div>
         </nav>   
     </header>

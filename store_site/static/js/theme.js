@@ -1,22 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const themeToggle = document.getElementById('theme-toggle');
-    const icon = themeToggle.querySelector('i');
+    const themeToggles = document.querySelectorAll('#theme-toggle');
     
     // Verifica o tema salvo
     const currentTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', currentTheme);
-    updateIcon(currentTheme);
     
-    themeToggle.addEventListener('click', function() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    themeToggles.forEach(toggle => {
+        const icon = toggle.querySelector('i');
+        updateIcon(icon, currentTheme);
         
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateIcon(newTheme);
+        toggle.addEventListener('click', function() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            themeToggles.forEach(t => {
+                updateIcon(t.querySelector('i'), newTheme);
+            });
+        });
     });
     
-    function updateIcon(theme) {
+    function updateIcon(icon, theme) {
         if (theme === 'dark') {
             icon.classList.remove('fa-moon');
             icon.classList.add('fa-sun');
