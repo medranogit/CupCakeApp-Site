@@ -1,4 +1,5 @@
 {% extends 'meu_app/base.html' %}
+{% load static %}
 
 {% block title %}{{ produto.titulo }} - Detalhes{% endblock %}
 
@@ -236,6 +237,24 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Definição dos sons do carrinho
+        const cartSounds = {
+            add: new Howl({
+                src: ['{% static "audio/add-cart.wav" %}'],
+                volume: 0.3,
+                onload: function() {
+                    console.log('Som carregado com sucesso');
+                },
+                onloaderror: function() {
+                    console.log('Erro ao carregar o som');
+                }
+            }),
+            error: new Howl({
+                src: ['{% static "audio/add-cart.wav" %}'],
+                volume: 0.3
+            })
+        };
+
         const addToCartButton = document.querySelector('.adicionar-carrinho');
         const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
 
@@ -244,6 +263,7 @@
                 e.preventDefault();
                 {% if not user.is_authenticated %}
                     loginModal.show();
+                    cartSounds.error.play();
                 {% else %}
                     const produtoId = this.getAttribute('data-produto-id');
                     const url = `/adicionar_carrinho/${produtoId}/`;
@@ -257,6 +277,7 @@
                     })
                     .then((response) => response.json())
                     .then((data) => {
+                        cartSounds.add.play();
                         const badge = document.querySelector('.navbar .badge');
                         if (badge) {
                             badge.textContent = data.total_itens;
@@ -267,7 +288,10 @@
                             document.querySelector('.navbar .nav-link[href="/carrinho/"]').appendChild(newBadge);
                         }
                     })
-                    .catch((error) => console.error('Erro ao adicionar ao carrinho:', error));
+                    .catch((error) => {
+                        console.error('Erro ao adicionar ao carrinho:', error);
+                        cartSounds.error.play();
+                    });
                 {% endif %}
             });
         }

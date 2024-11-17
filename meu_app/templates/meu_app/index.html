@@ -174,14 +174,38 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    console.log('DOM Loaded');
+    
+    // Definição dos sons do carrinho
+    const cartSounds = {
+        add: new Howl({
+            src: ['{% static "audio/add-cart.wav" %}'],
+            volume: 0.3,
+            onload: function() {
+                console.log('Som carregado com sucesso');
+            },
+            onloaderror: function() {
+                console.log('Erro ao carregar o som');
+            }
+        }),
+        error: new Howl({
+            src: ['{% static "audio/add-cart.wav" %}'],
+            volume: 0.3
+        })
+    };
+
     const addToCartButtons = document.querySelectorAll('.adicionar-carrinho');
     const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
 
     addToCartButtons.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
+            console.log('Botão clicado');
+            
             {% if not user.is_authenticated %}
                 loginModal.show();
+                console.log('Tocando som de erro');
+                cartSounds.error.play();
             {% else %}
                 const produtoId = this.getAttribute('data-produto-id');
                 const url = `/adicionar_carrinho/${produtoId}/`;
@@ -195,6 +219,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .then(response => response.json())
                 .then(data => {
+                    console.log('Tocando som de sucesso');
+                    cartSounds.add.play();
+                    
                     const badge = document.querySelector('.navbar .badge');
                     if (badge) {
                         badge.textContent = data.total_itens;
@@ -205,7 +232,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         document.querySelector('.navbar .nav-link[href="/carrinho/"]').appendChild(newBadge);
                     }
                 })
-                .catch(error => console.error('Erro:', error));
+                .catch(error => {
+                    console.error('Erro:', error);
+                    console.log('Tocando som de erro');
+                    cartSounds.error.play();
+                });
             {% endif %}
         });
     });
