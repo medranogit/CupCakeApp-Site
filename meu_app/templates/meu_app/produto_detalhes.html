@@ -125,6 +125,81 @@
             height: auto;
             padding: 0.8rem;
         }
+
+        .product-details-container {
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Estilos para Tamanho */
+        .product-size-section {
+            margin-bottom: 2rem;
+        }
+
+        .size-badge {
+            background-color: var(--bg-secondary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-right: 1rem;
+        }
+
+        /* Estilos para Ingredientes */
+        .product-ingredients-section {
+            margin-bottom: 2rem;
+            background-color: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .ingredients-text {
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Estilos para Informações Nutricionais */
+        .product-nutrition-section {
+            margin-bottom: 2rem;
+        }
+
+        .nutrition-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .nutrition-item {
+            background-color: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nutrition-label {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .nutrition-value {
+            color: var(--text-primary);
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .nutrition-table {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 
     <div class="row g-4">
@@ -150,6 +225,64 @@
                             data-produto-id="{{ produto.id }}">
                         <i class="fas fa-shopping-cart me-2"></i>Adicionar ao Carrinho
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-details-container">
+        <!-- Tamanho -->
+        <div class="product-size-section">
+            <h3 class="section-title">Tamanho</h3>
+            <div class="size-info">
+                <span class="size-badge">{{ produto.get_tamanho_display }}</span>
+                {% if produto.tamanho == 'P' %}
+                <small>Ideal para 1 pessoa</small>
+                {% elif produto.tamanho == 'M' %}
+                <small>Ideal para 2 pessoas</small>
+                {% else %}
+                <small>Ideal para compartilhar</small>
+                {% endif %}
+            </div>
+        </div>
+    
+        <!-- Ingredientes -->
+        <div class="product-ingredients-section">
+            <h3 class="section-title">Ingredientes</h3>
+            <p class="ingredients-text">{{ produto.ingredientes|linebreaks }}</p>
+        </div>
+    
+        <!-- Informações Nutricionais -->
+        <div class="product-nutrition-section">
+            <h3 class="section-title">Informações Nutricionais</h3>
+            <div class="nutrition-table">
+                <div class="nutrition-item">
+                    <span class="nutrition-label">Calorias</span>
+                    <span class="nutrition-value">{{ produto.calorias }} kcal</span>
+                </div>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">Carboidratos</span>
+                    <span class="nutrition-value">{{ produto.carboidratos }}g</span>
+                </div>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">Proteínas</span>
+                    <span class="nutrition-value">{{ produto.proteinas }}g</span>
+                </div>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">Gorduras Totais</span>
+                    <span class="nutrition-value">{{ produto.gorduras_totais }}g</span>
+                </div>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">Gorduras Saturadas</span>
+                    <span class="nutrition-value">{{ produto.gorduras_saturadas }}g</span>
+                </div>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">Fibras</span>
+                    <span class="nutrition-value">{{ produto.fibras }}g</span>
+                </div>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">Sódio</span>
+                    <span class="nutrition-value">{{ produto.sodio }}mg</span>
                 </div>
             </div>
         </div>

@@ -4,21 +4,46 @@ from .models import Produto, Carrinho, CarrinhoProduto, Comentario
 # Registro do modelo Produto no admin
 @admin.register(Produto)
 class ProdutoAdmin(admin.ModelAdmin):
-    list_display = ('titulo', 'preco')  # Campos a serem exibidos na lista
+    list_display = ('titulo', 'tamanho', 'preco', 'calorias')
+    list_filter = ('tamanho',)
+    search_fields = ('titulo', 'descricao', 'ingredientes')
+    fieldsets = (
+        ('Informações Básicas', {
+            'fields': ('titulo', 'descricao', 'preco', 'imagem', 'tamanho')
+        }),
+        ('Ingredientes', {
+            'fields': ('ingredientes',),
+        }),
+        ('Informações Nutricionais', {
+            'fields': (
+                'calorias',
+                'gorduras_totais',
+                'gorduras_saturadas',
+                'carboidratos',
+                'proteinas',
+                'fibras',
+                'sodio'
+            ),
+        }),
+    )
 
 # Registro do modelo Carrinho no admin
 @admin.register(Carrinho)
 class CarrinhoAdmin(admin.ModelAdmin):
-    list_display = ('usuario',)  # Campos a serem exibidos na lista
+    list_display = ('usuario',)
+    search_fields = ('usuario__username',)
 
 # Registro do modelo CarrinhoProduto no admin
 @admin.register(CarrinhoProduto)
 class CarrinhoProdutoAdmin(admin.ModelAdmin):
-    list_display = ('carrinho', 'produto', 'quantidade')  # Campos a serem exibidos na lista
+    list_display = ('carrinho', 'produto', 'quantidade')
+    list_filter = ('carrinho__usuario',)
+    search_fields = ('produto__titulo',)
 
 # Registro do modelo Comentario no admin
 @admin.register(Comentario)
 class ComentarioAdmin(admin.ModelAdmin):
-    list_display = ('produto', 'usuario', 'criado_em')  # Campos a serem exibidos na lista
-    list_filter = ('produto', 'criado_em')  # Filtros disponíveis na lista
-    search_fields = ('usuario__username', 'texto')  # Campos pesquisáveis
+    list_display = ('produto', 'usuario', 'nota', 'criado_em')
+    list_filter = ('produto', 'nota', 'criado_em')
+    search_fields = ('usuario__username', 'texto')
+    readonly_fields = ('criado_em',)

@@ -2,10 +2,27 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Produto(models.Model):
+    TAMANHO_CHOICES = [
+        ('P', 'Pequeno'),
+        ('M', 'Médio'),
+        ('G', 'Grande'),
+    ]
+    
     titulo = models.CharField(max_length=100)
     descricao = models.TextField()
     preco = models.DecimalField(max_digits=10, decimal_places=2)
-    imagem = models.ImageField(upload_to='produtos/', blank=True, null=True)
+    imagem = models.ImageField(upload_to='produtos/', null=True, blank=True)
+    
+    tamanho = models.CharField(max_length=1, choices=TAMANHO_CHOICES, default='M')
+    ingredientes = models.TextField(blank=True)
+    
+    calorias = models.IntegerField(default=0)
+    gorduras_totais = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    gorduras_saturadas = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    carboidratos = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    proteinas = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    fibras = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    sodio = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
     def __str__(self):
         return self.titulo
