@@ -3,42 +3,188 @@
 {% block title %}Carrinho - Cupcake App{% endblock %}
 
 {% block content %}
-<h1>Seu Carrinho</h1>
-<div class="container">
+<style>
+    /* Container principal */
+    .cart-container {
+        background-color: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin: 2rem auto;
+    }
+
+    .cart-title {
+        color: var(--bs-primary);
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    /* Desktop View */
+    .desktop-cart {
+        display: block;
+    }
+
+    .mobile-cart {
+        display: none;
+    }
+
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+    }
+
+    .cart-table th {
+        background-color: #f8f9fa;
+        color: #495057;
+        font-weight: 600;
+        padding: 1rem;
+        text-align: center;
+        border: 1px solid #dee2e6;
+    }
+
+    .cart-table td {
+        padding: 1rem;
+        vertical-align: middle;
+        text-align: center;
+        border: 1px solid #dee2e6;
+    }
+
+    /* Mobile View */
+    .cart-item-mobile {
+        background: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .cart-item-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .cart-item-price {
+        color: #28a745;
+        font-weight: 500;
+        margin: 0.5rem 0;
+    }
+
+    .cart-item-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .quantity-input {
+        width: 80px;
+        padding: 0.5rem;
+        border: 1px solid #ced4da;
+        border-radius: 0.5rem;
+        text-align: center;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .desktop-cart {
+            display: none;
+        }
+
+        .mobile-cart {
+            display: block;
+        }
+
+        .cart-container {
+            padding: 1rem;
+        }
+
+        .cart-item-actions {
+            flex-direction: column;
+        }
+
+        .cart-item-actions form {
+            width: 100%;
+        }
+
+        .cart-item-actions button {
+            width: 100%;
+            margin: 0.25rem 0;
+        }
+
+        .quantity-input {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+    }
+</style>
+
+<div class="cart-container">
+    <h1 class="cart-title">Seu Carrinho</h1>
     {% if carrinho and itens %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Produto</th>
-                <th>Quantidade</th>
-                <th>Preço Unitário</th>
-                <th>Subtotal</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in itens %}
-            <tr>
-                <td>{{ item.produto.titulo }}</td>
-                <td>
-                    <form method="post" action="{% url 'atualizar_quantidade' item.produto.id %}">
-                        {% csrf_token %}
-                        <input type="number" name="quantidade" value="{{ item.quantidade }}" min="1">
-                        <button type="submit" class="btn btn-primary btn-sm">Atualizar</button>
-                    </form>
-                </td>
-                <td>R$ {{ item.produto.preco }}</td>
-                <td>R$ {{ item.subtotal }}</td>
-                <td>
-                    <form method="post" action="{% url 'remover_item' item.produto.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm">Remover</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    
+    <!-- Desktop View -->
+    <div class="desktop-cart">
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unitário</th>
+                    <th>Subtotal</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in itens %}
+                <tr>
+                    <td>{{ item.produto.titulo }}</td>
+                    <td>
+                        <form method="post" action="{% url 'atualizar_quantidade' item.produto.id %}">
+                            {% csrf_token %}
+                            <input type="number" name="quantidade" value="{{ item.quantidade }}" min="1" class="quantity-input">
+                            <button type="submit" class="btn btn-primary">Atualizar</button>
+                        </form>
+                    </td>
+                    <td>R$ {{ item.produto.preco }}</td>
+                    <td>R$ {{ item.subtotal }}</td>
+                    <td>
+                        <form method="post" action="{% url 'remover_item' item.produto.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Remover</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mobile View -->
+    <div class="mobile-cart">
+        {% for item in itens %}
+        <div class="cart-item-mobile">
+            <div class="cart-item-title">{{ item.produto.titulo }}</div>
+            <div class="cart-item-price">
+                <div>Preço: R$ {{ item.produto.preco }}</div>
+                <div>Subtotal: R$ {{ item.subtotal }}</div>
+            </div>
+            <div class="cart-item-actions">
+                <form method="post" action="{% url 'atualizar_quantidade' item.produto.id %}" class="d-flex flex-column">
+                    {% csrf_token %}
+                    <input type="number" name="quantidade" value="{{ item.quantidade }}" min="1" class="quantity-input">
+                    <button type="submit" class="btn btn-primary">Atualizar Quantidade</button>
+                </form>
+                <form method="post" action="{% url 'remover_item' item.produto.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Remover Item</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
     <div class="text-end">
         <p><strong>Total dos Produtos:</strong> R$ {{ total_geral }}</p>
     </div>
