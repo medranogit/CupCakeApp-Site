@@ -32,6 +32,58 @@
             background-color: #0056b3;
             color: white;
         }
+        .desktop-history {
+            display: block;
+        }
+
+        .mobile-history {
+            display: none;
+        }
+
+        .purchase-card {
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .purchase-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .purchase-protocol {
+            font-weight: 600;
+            color: var(--bs-primary);
+        }
+
+        .purchase-total {
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        .purchase-date {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-history {
+                display: none;
+            }
+
+            .mobile-history {
+                display: block;
+            }
+
+            .purchase-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
     </style>
 
     <!-- Informações do Perfil -->
@@ -76,26 +128,53 @@
         <div class="profile-card-header">Histórico de Compras</div>
         <div class="profile-card-body">
             {% if compras %}
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Protocolo</th>
-                            <th>Total Pago</th>
-                            <th>Data</th>
-                            <th>Detalhes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for compra in compras %}
-                        <tr>
-                            <td>{{ compra.protocolo }}</td>
-                            <td>R$ {{ compra.total_pago|floatformat:2 }}</td>
-                            <td>{{ compra.criado_em|date:"d/m/Y H:i" }}</td>
-                            <td>{{ compra.detalhes|default:"Sem detalhes" }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <!-- Desktop View -->
+                <div class="desktop-history">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Protocolo</th>
+                                <th>Total Pago</th>
+                                <th>Data</th>
+                                <th>Detalhes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for compra in compras %}
+                            <tr>
+                                <td>{{ compra.protocolo }}</td>
+                                <td>R$ {{ compra.total_pago|floatformat:2 }}</td>
+                                <td>{{ compra.criado_em|date:"d/m/Y H:i" }}</td>
+                                <td>{{ compra.detalhes|default:"Sem detalhes" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mobile View -->
+                <div class="mobile-history">
+                    {% for compra in compras %}
+                    <div class="purchase-card">
+                        <div class="purchase-info">
+                            <div class="purchase-protocol">
+                                Protocolo: {{ compra.protocolo }}
+                            </div>
+                            <div class="purchase-total">
+                                R$ {{ compra.total_pago|floatformat:2 }}
+                            </div>
+                        </div>
+                        <div class="purchase-date">
+                            {{ compra.criado_em|date:"d/m/Y H:i" }}
+                        </div>
+                        {% if compra.detalhes %}
+                        <div class="purchase-details mt-2">
+                            {{ compra.detalhes }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
             {% else %}
                 <p class="text-muted">Nenhuma compra realizada ainda.</p>
             {% endif %}

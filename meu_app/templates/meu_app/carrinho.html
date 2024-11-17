@@ -119,6 +119,34 @@
             margin-bottom: 0.5rem;
         }
     }
+
+    /* Adicione estas classes ao CSS existente */
+    .shipping-section {
+        scroll-margin-top: 2rem;
+        background-color: #f8f9fa;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .shipping-result {
+        margin-top: 1rem;
+    }
+
+    .checkout-section {
+        margin-top: 2rem;
+        text-align: right;
+    }
+
+    @media (max-width: 768px) {
+        .checkout-section {
+            text-align: center;
+        }
+        
+        .checkout-section button {
+            width: 100%;
+        }
+    }
 </style>
 
 <div class="cart-container">
@@ -239,12 +267,70 @@
 </div>
 
 <script>
-    function formatarCEP(campo) {
-        let cep = campo.value.replace(/\D/g, ''); // Remove qualquer caractere não numérico
-        if (cep.length > 5) {
-            cep = cep.slice(0, 5) + '-' + cep.slice(5, 8); // Insere o hífen automaticamente
+    document.addEventListener('DOMContentLoaded', function() {
+        // Formulário de frete
+        const freteForm = document.querySelector('form[action="{% url "carrinho" %}"]');
+        
+        // Formulários de atualização de quantidade
+        const quantityForms = document.querySelectorAll('form[action*="atualizar_quantidade"]');
+        
+        // Formulários de remoção
+        const removeForms = document.querySelectorAll('form[action*="remover_item"]');
+
+        // Função genérica para handle de formulários
+        function handleFormSubmit(form, e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const scrollPos = window.scrollY;
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                document.open();
+                document.write(html);
+                document.close();
+                window.scrollTo(0, scrollPos);
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                form.submit();
+            });
         }
-        campo.value = cep; // Atualiza o valor do campo
+
+        // Aplicar para o formulário de frete
+        if (freteForm) {
+            freteForm.addEventListener('submit', function(e) {
+                handleFormSubmit(this, e);
+            });
+        }
+
+        // Aplicar para formulários de quantidade
+        quantityForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                handleFormSubmit(this, e);
+            });
+        });
+
+        // Aplicar para formulários de remoção
+        removeForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                handleFormSubmit(this, e);
+            });
+        });
+    });
+
+    function formatarCEP(campo) {
+        let cep = campo.value.replace(/\D/g, '');
+        if (cep.length > 5) {
+            cep = cep.slice(0, 5) + '-' + cep.slice(5, 8);
+        }
+        campo.value = cep;
     }
 </script>
 {% endblock %}
