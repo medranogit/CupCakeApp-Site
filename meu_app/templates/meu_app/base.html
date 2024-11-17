@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/themes.css' %}">
 </head>
 <body>
     <header>
@@ -71,19 +72,29 @@
                     </li>
                     {% endif %}
                 </ul>
+                <div class="nav-item ms-3">
+                    <button id="theme-toggle" class="btn btn-outline-secondary">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
             </div>
         </nav>   
     </header>
     <main class="container mt-4">
         {% block content %}{% endblock %}
     </main>
-    <footer class="text-center py-4 bg-light">
-        <p>&copy; Cupcake Store. Todos os direitos reservados</p>
-        <p>Site destinado a trabalho academico </p>
+    <footer class="footer mt-auto py-3">
+        <div class="container text-center">
+            <span>&copy; 2024 Cupcake App. Todos os direitos reservados.</span>
+            <br>
+            <br>
+            <p>Site destinado a trabalho academico. </p>
+        </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="{% static 'js/theme.js' %}"></script>
 </body>
 </html>

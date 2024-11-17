@@ -1,0 +1,240 @@
+:root {
+    /* Light Theme (default) */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --border-color: #dee2e6;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --card-bg: #ffffff;
+    --input-bg: #ffffff;
+    --input-border: #ced4da;
+    --navbar-bg: #ffffff;
+    --navbar-text: #212529;
+    --footer-bg: #f8f9fa;
+    --footer-text: #212529;
+    --image-border-color: #ffffff;
+    --card-light-bg: #f8f9fa;
+    --team-card-bg: #ffffff;
+    --image-container-bg: #ffffff;
+}
+
+[data-theme="dark"] {
+    /* Dark Theme */
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --text-primary: #e0e0e0;
+    --text-secondary: #9e9e9e;
+    --border-color: #404040;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --card-bg: #1e1e1e;
+    --input-bg: #2d2d2d;
+    --input-border: #404040;
+    --navbar-bg: #1e1e1e;
+    --navbar-text: #e0e0e0;
+    --footer-bg: #1e1e1e;
+    --footer-text: #e0e0e0;
+    --image-border-color: #2d2d2d;
+    --card-light-bg: #2d2d2d;
+    --team-card-bg: #1e1e1e;
+    --image-container-bg: #1e1e1e;
+}
+
+/* Ajustes gerais do body e main */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    border-top: 1px solid var(--border-color);
+    padding: 1rem 0;
+    margin-top: 2rem;
+}
+
+/* Ajustes para elementos comuns */
+.card, .modal-content {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+input, select, textarea {
+    background-color: var(--input-bg) !important;
+    border-color: var(--input-border) !important;
+    color: var(--text-primary) !important;
+}
+
+.table {
+    color: var(--text-primary);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--bg-secondary);
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--navbar-bg) !important;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-brand, .nav-link {
+    color: var(--navbar-text) !important;
+}
+
+.navbar .btn-outline-primary,
+.navbar .btn-outline-secondary {
+    border-color: var(--border-color);
+    color: var(--navbar-text);
+}
+
+.navbar .btn-outline-primary:hover,
+.navbar .btn-outline-secondary:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* Ajustes para o tema escuro */
+[data-theme="dark"] .navbar-toggler {
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+[data-theme="dark"] .badge {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Ajustes para o about.html */
+.image-container {
+    position: relative;
+    padding: 15px;
+    background: var(--card-bg) !important;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.image-container::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px solid var(--bs-primary);
+    border-radius: 1.2rem;
+    z-index: -1;
+}
+
+.about-image {
+    border: 8px solid var(--card-bg) !important;
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 0.8rem;
+}
+
+.bg-light {
+    background-color: var(--card-light-bg) !important;
+}
+
+.values-card {
+    background-color: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+}
+
+.card.border-0 {
+    background-color: var(--team-card-bg) !important;
+}
+
+.text-muted {
+    color: var(--text-secondary) !important;
+}
+
+.image-border {
+    border-color: var(--bs-primary) !important;
+}
+
+/* Ajustes para suporte.html */
+.support-card {
+    background-color: var(--card-bg);
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    margin-top: 2rem;
+}
+
+.support-card-header {
+    background-color: var(--bs-primary);
+    padding: 1.5rem;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.support-card-body {
+    padding: 2rem;
+    background-color: var(--card-bg);
+}
+
+.form-label {
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    border-radius: 0.5rem;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    transition: border-color 0.2s;
+}
+
+.form-control:focus {
+    border-color: var(--bs-primary);
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+.dropdown-item {
+    color: var(--text-primary);
+}
+
+.dropdown-item:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.dropdown-item.text-danger {
+    color: #dc3545 !important;
+}
+
+.dropdown-item.text-danger:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
