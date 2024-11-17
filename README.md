@@ -1,39 +1,69 @@
-# 🧁 **Cupcake App - Gerenciamento de Loja Online**
+# 🧁 **Cupcake App**
 
-O **Cupcake App** é uma aplicação Django desenvolvida para gerenciar uma loja online com funcionalidades completas de e-commerce. Este projeto inclui exibição de produtos, carrinho de compras, controle de usuários, avaliações e comentários. Ele foi criado com foco em usabilidade, responsividade e fácil manutenção.
-
----
-
-## 📋 **Funcionalidades**
-
-- **Catálogo de Produtos**:
-  - Exibição detalhada de produtos com imagens, descrição e preço.
-  - Avaliações e comentários dos usuários.
-
-- **Carrinho de Compras**:
-  - Adicionar, atualizar e remover itens.
-  - Cálculo dinâmico de subtotal e total do carrinho.
-
-- **Autenticação de Usuários**:
-  - Registro, login e logout de usuários.
-  - Gerenciamento de sessão para carrinho personalizado por usuário.
-
-- **Avaliações e Comentários**:
-  - Sistema de classificação (1 a 5 estrelas) para produtos.
-  - Comentários com data e autor associados.
+Aplicação Django para gerenciamento de uma loja virtual de cupcakes, integrando funcionalidades completas de e-commerce, com foco em experiência do usuário e design responsivo.
 
 ---
 
-## 🛠️ **Tecnologias Utilizadas**
+## 🚀 **Funcionalidades Detalhadas**
 
-- **Backend**:
-  - [Django](https://www.djangoproject.com/) - Framework web robusto para desenvolvimento rápido.
-  - Banco de dados SQLite (substituível por PostgreSQL ou MySQL).
-  
-- **Frontend**:
-  - HTML5, CSS3 e responsividade com Media Queries.
-  - Integração com templates Django para renderização dinâmica.
+### **1. Catálogo de Produtos**
+- Apresenta uma lista de cupcakes com:
+  - **Imagem**: Exibição visual de cada produto.
+  - **Descrição curta**: Texto com informações rápidas.
+  - **Preço**: Valor em destaque.
+  - **Botões de Ação**:
+    - **"Ver Detalhes"**: Redireciona para a página do produto.
+    - **"Adicionar ao Carrinho"**: Adiciona o item ao carrinho (com mensagem de feedback).
 
-- **Outros**:
-  - Sistema de autenticação embutido do Django.
-  - Manipulação de arquivos e imagens para produtos.
+### **2. Página de Detalhes do Produto**
+- Informações completas sobre o cupcake:
+  - **Tamanho**: Pequeno, médio ou grande.
+  - **Ingredientes**: Lista completa do produto.
+  - **Informações Nutricionais**:
+    - Calorias, gorduras, carboidratos, proteínas, fibras e sódio.
+  - **Seção de Comentários**:
+    - Usuários podem avaliar o produto (1 a 5 estrelas) e deixar comentários.
+
+### **3. Carrinho de Compras**
+- Recursos do carrinho:
+  - **Adicionar Produtos**: Incrementa a quantidade diretamente.
+  - **Atualizar Quantidade**: Permite ajustes dinâmicos.
+  - **Remover Itens**: Remove produtos do carrinho.
+  - **Cálculo de Subtotal e Total Geral**.
+  - **Calculadora de Frete**: Simulação do valor com base no CEP.
+
+### **4. Finalização de Compra**
+- Página de pagamento:
+  - Formulário para entrada de dados de cartão (nome, número, validade e CVV).
+  - Opções de parcelamento.
+  - Exibição clara do valor total com frete.
+
+### **5. Histórico de Compras**
+- Exibido no perfil do usuário:
+  - **Protocolo de Pedido**: Número único para referência.
+  - **Total Pago**: Valor da compra com frete.
+  - **Data e Hora**: Registro do pedido.
+  - **Detalhes dos Itens**: Lista completa dos produtos comprados.
+
+### **6. Sistema de Usuários**
+- **Autenticação**:
+  - Cadastro e login com validações robustas.
+  - Redefinição de senha integrada.
+- **Gerenciamento de Perfil**:
+  - Edição de nome, e-mail, telefone e CEP.
+  - Histórico de compras exibido na mesma página.
+
+### **7. Suporte ao Cliente**
+- Formulário de contato:
+  - Campos para assunto e mensagem.
+  - Feedback visual após envio da solicitação.
+
+### **8. Painel Administrativo**
+- Funcionalidades para administradores:
+  - Gerenciamento de produtos, incluindo upload de imagens e definição de informações nutricionais.
+  - Visualização e moderação de comentários.
+  - Consulta ao histórico de pedidos.
+
+### **9. Design Responsivo**
+- Interface otimizada para desktop e dispositivos móveis.
+- Temas claros e escuros ajustáveis pelo usuário.
