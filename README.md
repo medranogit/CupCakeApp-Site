@@ -67,3 +67,34 @@ Aplicação Django para gerenciamento de uma loja virtual de cupcakes, integrand
 ### **9. Design Responsivo**
 - Interface otimizada para desktop e dispositivos móveis.
 - Temas claros e escuros ajustáveis pelo usuário.
+
+- 
+## Instalação
+
+Siga os passos abaixo para configurar o projeto em sua máquina local:
+
+1. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/medranogit/CupCakeApp-Site.git
+   cd CupCakeApp-Site
+   ```
+
+2. **Crie um ambiente virtual e ative-o**:
+   ```bash
+   python -m venv env
+   source env/bin/activate  # Para Linux/Mac
+   env\Scripts\activate     # Para Windows
+   ```
+
+3. **Instale as dependências**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. **Inicie o servidor de desenvolvimento**:
+   ```bash
+   python manage.py runserver
+   ```
+
+5. **Acesse a aplicação em seu navegador**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+
+## ⚠️ **ATENÇÃO - No pagamento com cartão coloquem dados não verdadeiros**
