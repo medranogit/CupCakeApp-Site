@@ -69,7 +69,7 @@ Aplicação Django para gerenciamento de uma loja virtual de cupcakes, integrand
 - Temas claros e escuros ajustáveis pelo usuário.
 
 - 
-## Instalação
+## ✨ **Instalação**
 
 Siga os passos abaixo para configurar o projeto em sua máquina local:
 
