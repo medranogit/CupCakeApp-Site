@@ -1,5 +1,8 @@
 # 🧁 **Cupcake App**
 
+![image](https://github.com/user-attachments/assets/f8f2bfbe-d661-49f1-8bcb-d66d33755fb3)
+
+
 Aplicação Django para gerenciamento de uma loja virtual de cupcakes, integrando funcionalidades completas de e-commerce, com foco em experiência do usuário e design responsivo.
 
 ---
